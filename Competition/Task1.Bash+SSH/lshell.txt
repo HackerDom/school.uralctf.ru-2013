@@ -3,7 +3,7 @@
     logpath : /var/log/lshell/  #Если интересно посмотреть, что вводили.
     loglevel : 4
 
-    allowed : ['ls','echo','cd','grep','find','man','cat','less']
+    allowed : ['ls','cd','find','man','cat','less',]
     forbidden : ['&','`','>','<','$(','${']
     warning_counter : 50
     prompt : "%u@%h"
@@ -15,3 +15,4 @@
 4. /etc/passwd: hacker:.....:/home/hacker/jail:/usr/bin/lshell
 5. /etc/security/limits.conf:
     hacker  hard    nproc   30
+
