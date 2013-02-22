@@ -3,7 +3,7 @@
 
 """server: a file-based pop3 server
 
-Useage:
+Usage:
     python server.py <port> <path_to_message_file>
 """
 import logging
@@ -13,7 +13,7 @@ import sys
 
 logging.basicConfig(format="%(name)s %(levelname)s - %(message)s")
 log = logging.getLogger("server")
-log.setLevel(logging.INFO)
+log.setLevel(logging.DEBUG)
 
 
 class ChatterboxConnection(object):
@@ -22,8 +22,10 @@ class ChatterboxConnection(object):
     def __init__(self, conn):
         self.conn = conn
         self.dispatch = {'USER': self.handleUser, 'PASS': self.handlePass, 'STAT': self.handleStat,
-                         'LIST': self.handleList, 'TOP': self.handleTop,
+                         'LIST': self.handleList, 'TOP': self.handleTop, 'DELE': self.handleNoop,
                          'RETR': self.handleRetr, 'NOOP': self.handleNoop, 'QUIT': self.handleQuit}
+        self.user = ""
+        self.authorized = 0
 
     def __getattr__(self, name):
         return getattr(self.conn, name)
@@ -54,33 +56,61 @@ class ChatterboxConnection(object):
         return "".join(data)
 
     def handleUser(self, data, msg):
-        if data == "USER messiah":
-            return "+OK name is a valid mailbox"
+        try:
+            cmd, self.user = data.split()
+        except ValueError:
+            return "-ERR you must send name"
         else:
-            return "-ERR never heard of mailbox name: <%s>" % data.replace("USER ", "")
+            if self.user == "messiah":
+                return "+OK it is a valid mailbox"
+            else:
+                return "-ERR never heard of mailbox %s" % self.user
 
     def handlePass(self, data, msg):
-        if data == "PASS qwerty":
-            return "+OK pass accepted"
-        else:
+        if self.user == "messiah":
+            if data == "PASS qwerty":
+                self.authorized = 1
+                return "+OK user authorized"
             return "-ERR invalid password"
+        else:
+            return "-ERR send me your name firstly"
 
     def handleStat(self, data, msg):
+        if not self.authorized:
+            return "-ERR authorize firstly"
         return "+OK 1 %i" % msg.size
 
     def handleList(self, data, msg):
+        if not self.authorized:
+            return "-ERR authorize firstly"
         return "+OK 1 messages (%i octets)\r\n1 %i\r\n." % (msg.size, msg.size)
 
     def handleTop(self, data, msg):
-        cmd, num, lines = data.split()
-        assert num == "1", "unknown message number: %s" % num
-        lines = int(lines)
-        text = msg.top + "\r\n\r\n" + "\r\n".join(msg.bot[:lines])
-        return "+OK top of message follows\r\n%s\r\n." % text
+        if not self.authorized:
+            return "-ERR authorize firstly"
+        try:
+            cmd, num, lines = data.split()
+        except ValueError:
+            return "-ERR send me message number and number of lines"
+        else:
+            if num != "1":
+                return "-ERR unknown message number: %s" % num
+            lines = int(lines)
+            text = msg.top + "\r\n\r\n" + "\r\n".join(msg.bot[:lines])
+            return "+OK top of message follows\r\n%s\r\n." % text
 
     def handleRetr(self, data, msg):
-        log.info("message sent")
-        return "+OK %i octets\r\n%s\r\n." % (msg.size, msg.data)
+        if not self.authorized:
+            return "-ERR authorize firstly"
+        try:
+            cmd, num = data.split()
+        except ValueError:
+            return "-ERR send me a number of message"
+        else:
+            if num != "1":
+                return "-ERR unknown message number: %s" % num
+            log.info("message sent")
+            return "+OK %i octets\r\n%s\r\n." % (msg.size, msg.data)
 
     def handleNoop(self, data, msg):
         return "+OK"
@@ -97,11 +127,19 @@ class Message(object):
             self.size = len(data)
             self.top, bot = data.split("\r\n\r\n", 1)
             self.bot = bot.split("\r\n")
+        except Exception:
+            log.error("Bad message file")
         finally:
             msg.close()
 
 
 def serve(host, port, filename):
+    """
+
+    :param host:
+    :param port:
+    :param filename:
+    """
     assert os.path.exists(filename)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind((host, port))
@@ -118,17 +156,19 @@ def serve(host, port, filename):
             try:
                 msg = Message(filename)
                 conn = ChatterboxConnection(conn)
-                conn.sendall("+OK pop3 server ready")
+                conn.sendall("+OK Welcome to our POP3 server!")
                 while True:
                     data = conn.recvall()
+                    if not data.split(None, 1):
+                        continue
+                    command = data.split(None, 1)[0]
                     try:
-                        command = data.split(None, 1)[0]
                         cmd = conn.dispatch[command]
                     except KeyError:
                         conn.sendall("-ERR unknown command")
                     else:
                         conn.sendall(cmd(data, msg))
-                        if cmd is conn.handleQuit:
+                        if cmd == conn.handleQuit:
                             break
             finally:
                 conn.close()
@@ -159,6 +199,7 @@ if __name__ == "__main__":
             print "Unknown port:", port
         else:
             if os.path.exists(filename):
-                serve(host, port, filename)
+                while True:
+                    serve(host, port, filename)
             else:
                 print "File not found:", filename
