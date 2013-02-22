@@ -10,18 +10,24 @@ import logging
 import os
 import socket
 import sys
-import traceback
 
 logging.basicConfig(format="%(name)s %(levelname)s - %(message)s")
-log = logging.getLogger("pypopper")
+log = logging.getLogger("server")
 log.setLevel(logging.INFO)
+
 
 class ChatterboxConnection(object):
     END = "\r\n"
+
     def __init__(self, conn):
         self.conn = conn
+        self.dispatch = {'USER': self.handleUser, 'PASS': self.handlePass, 'STAT': self.handleStat,
+                         'LIST': self.handleList, 'TOP': self.handleTop,
+                         'RETR': self.handleRetr, 'NOOP': self.handleNoop, 'QUIT': self.handleQuit}
+
     def __getattr__(self, name):
         return getattr(self.conn, name)
+
     def sendall(self, data, END=END):
         if len(data) < 50:
             log.debug("send: %r", data)
@@ -29,6 +35,7 @@ class ChatterboxConnection(object):
             log.debug("send: %r...", data[:50])
         data += END
         self.conn.sendall(data)
+
     def recvall(self, END=END):
         data = []
         while True:
@@ -46,6 +53,41 @@ class ChatterboxConnection(object):
         log.debug("recv: %r", "".join(data))
         return "".join(data)
 
+    def handleUser(self, data, msg):
+        if data == "USER messiah":
+            return "+OK name is a valid mailbox"
+        else:
+            return "-ERR never heard of mailbox name: <%s>" % data.replace("USER ", "")
+
+    def handlePass(self, data, msg):
+        if data == "PASS qwerty":
+            return "+OK pass accepted"
+        else:
+            return "-ERR invalid password"
+
+    def handleStat(self, data, msg):
+        return "+OK 1 %i" % msg.size
+
+    def handleList(self, data, msg):
+        return "+OK 1 messages (%i octets)\r\n1 %i\r\n." % (msg.size, msg.size)
+
+    def handleTop(self, data, msg):
+        cmd, num, lines = data.split()
+        assert num == "1", "unknown message number: %s" % num
+        lines = int(lines)
+        text = msg.top + "\r\n\r\n" + "\r\n".join(msg.bot[:lines])
+        return "+OK top of message follows\r\n%s\r\n." % text
+
+    def handleRetr(self, data, msg):
+        log.info("message sent")
+        return "+OK %i octets\r\n%s\r\n." % (msg.size, msg.data)
+
+    def handleNoop(self, data, msg):
+        return "+OK"
+
+    def handleQuit(self, data, msg):
+        return "+OK POP3 server signing off"
+
 
 class Message(object):
     def __init__(self, filename):
@@ -58,52 +100,6 @@ class Message(object):
         finally:
             msg.close()
 
-
-def handleUser(data, msg):
-    if data == "USER messiah":
-        return "+OK name is a valid mailbox"
-    else:
-        return "-ERR never heard of mailbox name: <%s>"%data.replace("USER ","")
-
-def handlePass(data, msg):
-    if data == "PASS qwerty":
-        return "+OK pass accepted"  
-    else:
-        return "-ERR invalid password"
-
-def handleStat(data, msg):
-    return "+OK 1 %i" % msg.size
-
-def handleList(data, msg):
-    return "+OK 1 messages (%i octets)\r\n1 %i\r\n." % (msg.size, msg.size)
-
-def handleTop(data, msg):
-    cmd, num, lines = data.split()
-    assert num == "1", "unknown message number: %s" % num
-    lines = int(lines)
-    text = msg.top + "\r\n\r\n" + "\r\n".join(msg.bot[:lines])
-    return "+OK top of message follows\r\n%s\r\n." % text
-
-def handleRetr(data, msg):
-    log.info("message sent")
-    return "+OK %i octets\r\n%s\r\n." % (msg.size, msg.data)
-
-def handleNoop(data, msg):
-    return "+OK"
-
-def handleQuit(data, msg):
-    return "+OK pypopper POP3 server signing off"
-
-dispatch = dict(
-    USER=handleUser,
-    PASS=handlePass,
-    STAT=handleStat,
-    LIST=handleList,
-    TOP=handleTop,
-    RETR=handleRetr,
-    NOOP=handleNoop,
-    QUIT=handleQuit,
-)
 
 def serve(host, port, filename):
     assert os.path.exists(filename)
@@ -125,18 +121,19 @@ def serve(host, port, filename):
                 conn.sendall("+OK pop3 server ready")
                 while True:
                     data = conn.recvall()
-                    command = data.split(None, 1)[0]
                     try:
-                        cmd = dispatch[command]
+                        command = data.split(None, 1)[0]
+                        cmd = conn.dispatch[command]
                     except KeyError:
                         conn.sendall("-ERR unknown command")
                     else:
                         conn.sendall(cmd(data, msg))
-                        if cmd is handleQuit:
+                        if cmd is conn.handleQuit:
                             break
             finally:
                 conn.close()
                 msg = None
+
     except (SystemExit, KeyboardInterrupt):
         log.info("Server stopped")
     except Exception, ex:
@@ -144,6 +141,7 @@ def serve(host, port, filename):
     finally:
         sock.shutdown(socket.SHUT_RDWR)
         sock.close()
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
