@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crackme", "crackme\crackme.vcxproj", "{D7BF194C-4306-4993-A265-7DE01FF3B22D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "crackme2", "crackme2\crackme2.vcxproj", "{D449E496-6384-4A0B-8260-F6F13877DAA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7BF194C-4306-4993-A265-7DE01FF3B22D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D7BF194C-4306-4993-A265-7DE01FF3B22D}.Debug|Win32.Build.0 = Debug|Win32
+		{D7BF194C-4306-4993-A265-7DE01FF3B22D}.Release|Win32.ActiveCfg = Release|Win32
+		{D7BF194C-4306-4993-A265-7DE01FF3B22D}.Release|Win32.Build.0 = Release|Win32
+		{D449E496-6384-4A0B-8260-F6F13877DAA2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D449E496-6384-4A0B-8260-F6F13877DAA2}.Debug|Win32.Build.0 = Debug|Win32
+		{D449E496-6384-4A0B-8260-F6F13877DAA2}.Release|Win32.ActiveCfg = Release|Win32
+		{D449E496-6384-4A0B-8260-F6F13877DAA2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
