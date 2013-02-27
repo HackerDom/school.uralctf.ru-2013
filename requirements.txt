@@ -1,0 +1,7 @@
+django
+south
+PIL
+
+# dev
+django-debug-toolbar
+fabric
