@@ -5,3 +5,4 @@ PIL
 # dev
 django-debug-toolbar
 fabric
+mezzanine

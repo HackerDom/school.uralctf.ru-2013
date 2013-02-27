@@ -1,3 +1,4 @@
+# coding=utf-8
 __author__ = 'stribog'
 
 from settings import *
@@ -15,6 +16,6 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.sql.SQLDebugPanel',
     'debug_toolbar.panels.signals.SignalDebugPanel',
     'debug_toolbar.panels.logger.LoggingPanel',
-    )
+)
 
 INTERNAL_IPS = ('127.0.0.1',)
