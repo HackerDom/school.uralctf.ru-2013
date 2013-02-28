@@ -2,6 +2,8 @@
 #include <cstring>
 
 const char alph[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+void checkKey2(char *key);
 void checkKey(char *key)
 {
 	if (strlen(key) != 16)
@@ -18,11 +20,23 @@ void checkKey(char *key)
 		*c = alph[(mp ^ 0xdeadface) % 62];
 	}
 	if (hash == 12046408001372443516)
-		checkKey(newKey);
-	else if (hash == 17455650878452034834)
+		checkKey2(key);
+	else
+		printf("You fail.\n");
+}
+
+void checkKey2(char *key)
+{
+	unsigned __int64 hash = 0, mp = 1;
+	for (char *c = key; *c; c++)
+	{
+		hash += *c * 0xface * (mp *= 0xdead);
+		*c = alph[(mp ^ 0xfacedead) % 62];
+	}
+	if (hash == 5398040367137414880)
 		printf("Key:{%s}", key);
 	else
-		printf("You fail.");
+		printf("You fail.\n");
 }
 
 int main()
