@@ -1,5 +1,66 @@
 # coding=utf-8
 __author__ = 'pahaz'
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    #'social_auth.backends.google.GoogleOAuthBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    #'social_auth.backends.google.GoogleBackend',
+    #'social_auth.backends.yahoo.YahooBackend',
+    #'social_auth.backends.browserid.BrowserIDBackend',
+    #'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    #'social_auth.backends.contrib.disqus.DisqusBackend',
+    #'social_auth.backends.contrib.livejournal.LiveJournalBackend',
+    #'social_auth.backends.contrib.orkut.OrkutBackend',
+    #'social_auth.backends.contrib.foursquare.FoursquareBackend',
+    #'social_auth.backends.contrib.github.GithubBackend',
+    'social_auth.backends.contrib.vkontakte.VKontakteBackend',
+    #'social_auth.backends.contrib.live.LiveBackend',
+    #'social_auth.backends.contrib.skyrock.SkyrockBackend',
+    #'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
+    #'social_auth.backends.contrib.readability.ReadabilityBackend',
+    #'social_auth.backends.OpenIDBackend',
+)
+
+TWITTER_CONSUMER_KEY = ''
+TWITTER_CONSUMER_SECRET = ''
+FACEBOOK_APP_ID = ''
+FACEBOOK_API_SECRET = ''
+GOOGLE_OAUTH2_CLIENT_ID = ''
+GOOGLE_OAUTH2_CLIENT_SECRET = ''
+VKONTAKTE_APP_ID = '3459867'
+VKONTAKTE_APP_SECRET = 'BSVotEZ9HaNu9hdCu6sD'
+VK_APP_ID = '3459867'
+VK_API_SECRET = 'BSVotEZ9HaNu9hdCu6sD'
+VKONTAKTE_APP_AUTH = None
+
+###############
+# SOCIAL AUTH #
+###############
+
+# URLs used for login/logout when ACCOUNTS_ENABLED is set to True.
+LOGIN_URL = "/account/"
+LOGOUT_URL = "/account/logout/"
+
+SOCIAL_AUTH_LOGIN_URL = '/login/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/error/'
+
+SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
+SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
+
+GOOGLE_OAUTH2_CLIENT_ID = ''
+GOOGLE_OAUTH2_CLIENT_SECRET = ''
+
+GOOGLE_OAUTH_EXTRA_SCOPE = ['https://gdata.youtube.com']
+GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'access_type': 'offline'}
+
+SOCIAL_AUTH_RAISE_EXCEPTIONS = DEBUG
+
+
 
 #########
 # PATHS #
@@ -70,9 +131,6 @@ TEMPLATE_LOADERS = (
     #     'django.template.loaders.eggs.Loader',
 )
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     ('pahaz', 'pahaz@urfuclub.ru'),
 )
@@ -120,6 +178,7 @@ USE_TZ = True
 SECRET_KEY = "ac487dea-ee7f-4f7e-ad3e-0608046874f10-8463-ad8ebda16104"
 ROOT_URLCONF = '_project_.urls'
 WSGI_APPLICATION = '_project_.wsgi.application'
+ALLOWED_HOSTS = ['localhost', 'schoolctf.urfuclub.ru']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -132,7 +191,7 @@ WSGI_APPLICATION = '_project_.wsgi.application'
 # APPLICATIONS #
 ################
 USE_SOUTH = True
-AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
+AUTHENTICATION_BACKENDS = AUTHENTICATION_BACKENDS + ("mezzanine.core.auth_backends.MezzanineBackend",)
 
 INSTALLED_APPS = (
     "django.contrib.admin",
@@ -157,6 +216,7 @@ INSTALLED_APPS = (
 
     #'reversion', 'reversion_compare',
     '_project_',
+    'social_auth',
     'south',
 )
 
@@ -173,6 +233,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
+
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_login_redirect',
+
 )
 
 # List of middleware classes to use. Order is important; in the request phase,

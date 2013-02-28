@@ -13,6 +13,7 @@ urlpatterns = patterns('',
 
                        # enable the admin:
                        url(r'^admin/', include(site.urls)),
+                       url(r'', include('social_auth.urls')),
                        ("^", include("mezzanine.urls")),
 )
 

@@ -5,4 +5,7 @@ PIL
 # dev
 django-debug-toolbar
 fabric
+
+# general
 mezzanine
+django-social-auth
