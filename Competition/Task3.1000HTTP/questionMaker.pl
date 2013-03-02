@@ -58,6 +58,30 @@ sub toUsable_2{
 	foreach my $block_test(@questions){
 		foreach my $block_question(@$block_test){
 			# say $block_question;
+			$memory{++$id}->{question}=$block_question->{value};
+			$memory{$id}->{answers}=[];
+			my $countOfpoints=0;
+			foreach my $answer ( @{$block_question->{answerPoint}}){
+				if ($answer->{value} ne ''){
+					push $memory{$id}->{answers},$answer->{value};
+					++$countOfpoints;
+				}
+			}
+			$memory{$id}->{rightAnswer}= int(rand($countOfpoints));
+		}
+	}
+	
+	say $id;
+	store \%memory,'questions.finilized';
+	
+	my %memory;
+	my $id=0;
+	
+	# say Data::Dumper::Dumper(\%memory);
+	
+	foreach my $block_test(@questions){
+		foreach my $block_question(@$block_test){
+			# say $block_question;
 			$memory{++$id}->{question}=normIt($block_question->{value});
 			$memory{$id}->{answers}=[];
 			my $countOfpoints=0;
@@ -67,12 +91,10 @@ sub toUsable_2{
 					++$countOfpoints;
 				}
 			}
-			$memory{$id}->{rightAnswer}= $memory{$id}->{answers}[rand($countOfpoints)];
+			$memory{$id}->{rightAnswer}= int(rand($countOfpoints));
 		}
 	}
 	
-	say $id;
-	store \%memory,'goodDB';
 	say Data::Dumper::Dumper(\%memory);
 }
 
