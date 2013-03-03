@@ -15,6 +15,7 @@ binmode STDOUT,':utf8';
 
 my $nameOfCookie_DB:shared='cookies.finilized';
 my $nameOfQuestionsDB:shared='DB/questions.finilized';
+my $answersRequire=3;
 
 my $DB_questions_dont_forget_fucking_LOCK :shared= retrieve($nameOfQuestionsDB) or die("something wrong with DataBase($nameOfQuestionsDB). $!");
 my %h;
@@ -87,6 +88,7 @@ while($host->Accept()>=0){
 	# print "\r\n\r\n";
 	my $cookie='';
 	$cookie=$env{HTTP_COOKIE} if exists $env{HTTP_COOKIE};
+	$cookie=(split"=",$cookie)[1];
 	$cookie = '' if !isCookieExist $cookie;
 	
 	my $isRightAnswer=0;
@@ -156,10 +158,10 @@ sub isRightAnswer{
 }
 
 sub createCookie{
-	my $cookie=rand(1000).rand(1000).rand(1000).rand(1000).rand(1000);
+	my $cookie=rand(1000).rand(1000).rand(1000).rand(1000).rand(1000).time;
 	addCookie($cookie,1);
-	print "Set-Cookie: $cookie\r\n";
-	storeMyCookie;
+	print "Set-Cookie: rrandom=$cookie\r\n";
+	# storeMyCookie;
 	return $cookie;
 }
 
@@ -244,7 +246,7 @@ sub isCompletedTest{
 	
 	my $score = returnScore($cookie);
 	
-	if ($score>3){
+	if ($score>$answersRequire){
 		return 1;
 	}
 	
