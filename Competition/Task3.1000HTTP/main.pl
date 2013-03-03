@@ -38,6 +38,7 @@ sub addCookie{
 	my $currentScore=shift;
 	lock $DB_cookies;
 	$DB_cookies->{cookies}->{$cookie}->{score}=$currentScore;
+	storeMyCookie;
 }
 
 sub returnScore{
@@ -109,8 +110,11 @@ while($host->Accept()>=0){
 	}else{
 		$cookie=createCookie() if ($cookie eq '');
 	}
-	
-	showPage($cookie,$isRightAnswer);
+	if (isCompletedTest($cookie)){
+		showFlag($cookie);
+	}else{
+		showPage($cookie,$isRightAnswer);
+	}
 }
 
 sub thread_worker{
@@ -235,8 +239,25 @@ return shift;
 	return $body;
 }
 
+sub isCompletedTest{
+	my $cookie=shift;
+	
+	my $score = returnScore($cookie);
+	
+	if ($score>3){
+		return 1;
+	}
+	
+	return 0;
+}
 
-
+sub showFlag{
+	print "\r\n\r\n";
+	say "youre welcome\r\n";
+	say "access granted\r\n";
+	say "your lovely passphraze is\r\n";
+	say "whosyourdaddy\r\n";
+}
 __END__
 25. use Storable qw(lock_store lock_nstore lock_retrieve)
 26. lock_store \%table, 'file';
