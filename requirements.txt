@@ -8,4 +8,5 @@ fabric
 
 # general
 mezzanine
-django-social-auth
+django-ulogin
+jsonfield

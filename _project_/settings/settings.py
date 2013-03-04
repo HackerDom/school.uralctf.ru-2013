@@ -3,64 +3,28 @@ __author__ = 'pahaz'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    #'social_auth.backends.google.GoogleOAuthBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    #'social_auth.backends.google.GoogleBackend',
-    #'social_auth.backends.yahoo.YahooBackend',
-    #'social_auth.backends.browserid.BrowserIDBackend',
-    #'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    #'social_auth.backends.contrib.disqus.DisqusBackend',
-    #'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-    #'social_auth.backends.contrib.orkut.OrkutBackend',
-    #'social_auth.backends.contrib.foursquare.FoursquareBackend',
-    #'social_auth.backends.contrib.github.GithubBackend',
-    'social_auth.backends.contrib.vkontakte.VKontakteBackend',
-    #'social_auth.backends.contrib.live.LiveBackend',
-    #'social_auth.backends.contrib.skyrock.SkyrockBackend',
-    #'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
-    #'social_auth.backends.contrib.readability.ReadabilityBackend',
-    #'social_auth.backends.OpenIDBackend',
-)
+##
+## The django-ulogin settings
+##
+ULOGIN_FIELDS = ['first_name', 'last_name', 'sex', 'email']
+ULOGIN_OPTIONAL = ['photo', 'photo_big', 'city', 'country', 'bdate']
+COMMENTS_USE_RATINGS = False
+#AUTH_PROFILE_MODULE = 'userinfo.UserInfo'
+#AUTH_PROFILE_MODULE = 'list.UserProfile'
+#ACCOUNTS_PROFILE_FORM_CLASS = '_project_.models.UserInfo'
 
-TWITTER_CONSUMER_KEY = ''
-TWITTER_CONSUMER_SECRET = ''
-FACEBOOK_APP_ID = ''
-FACEBOOK_API_SECRET = ''
-GOOGLE_OAUTH2_CLIENT_ID = ''
-GOOGLE_OAUTH2_CLIENT_SECRET = ''
-VKONTAKTE_APP_ID = '3459867'
-VKONTAKTE_APP_SECRET = 'BSVotEZ9HaNu9hdCu6sD'
-VK_APP_ID = '3459867'
-VK_API_SECRET = 'BSVotEZ9HaNu9hdCu6sD'
-VKONTAKTE_APP_AUTH = None
-
-###############
-# SOCIAL AUTH #
-###############
-
-# URLs used for login/logout when ACCOUNTS_ENABLED is set to True.
-LOGIN_URL = "/account/"
-LOGOUT_URL = "/account/logout/"
-
-SOCIAL_AUTH_LOGIN_URL = '/login/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/error/'
-
-SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
-SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
-
-GOOGLE_OAUTH2_CLIENT_ID = ''
-GOOGLE_OAUTH2_CLIENT_SECRET = ''
-
-GOOGLE_OAUTH_EXTRA_SCOPE = ['https://gdata.youtube.com']
-GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'access_type': 'offline'}
-
-SOCIAL_AUTH_RAISE_EXCEPTIONS = DEBUG
-
-
+ULOGIN_SCHEMES = {
+    'default': {
+        'DISPLAY': 'panel',
+        'PROVIDERS': ["vkontakte", "facebook", "twitter", "google"],
+        'HIDDEN': [],
+    },
+    'small_google': {
+        'DISPLAY': 'small',
+        'PROVIDERS': ["google"],
+        'HIDDEN': [],
+    }
+}
 
 #########
 # PATHS #
@@ -191,7 +155,7 @@ ALLOWED_HOSTS = ['localhost', 'schoolctf.urfuclub.ru']
 # APPLICATIONS #
 ################
 USE_SOUTH = True
-AUTHENTICATION_BACKENDS = AUTHENTICATION_BACKENDS + ("mezzanine.core.auth_backends.MezzanineBackend",)
+AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
 
 INSTALLED_APPS = (
     "django.contrib.admin",
@@ -211,12 +175,15 @@ INSTALLED_APPS = (
     "mezzanine.pages",
     "mezzanine.galleries",
     "mezzanine.twitter",
+    '_project_',
+
+
     "mezzanine.accounts",
     #"mezzanine.mobile",
+    'userinfo',
 
     #'reversion', 'reversion_compare',
-    '_project_',
-    'social_auth',
+    'django_ulogin',
     'south',
 )
 
@@ -263,6 +230,7 @@ MIDDLEWARE_CLASSES = (
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
+    '_project_.middleware.StageUserMiddleware',
 )
 
 # Store these package names here as they may change in the future since
@@ -280,7 +248,7 @@ OPTIONAL_APPS = (
     "django_extensions",
     "compressor",
     PACKAGE_NAME_FILEBROWSER,
-    #PACKAGE_NAME_GRAPPELLI,
+    PACKAGE_NAME_GRAPPELLI,
 )
 
 DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}

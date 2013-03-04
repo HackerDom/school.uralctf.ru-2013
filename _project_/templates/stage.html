@@ -1,0 +1,25 @@
+{% if request.regstage %}
+
+    {% if request.regstage.all %}
+        <p> Вы полноценный участник!
+            {% else %}
+
+            Что бы принять участие, вам нужно: <br>
+        <p>
+            {% if not request.regstage.anketa %}
+                <a href="/interview/">Заполнить анкету /interview/ !</a>
+            {% endif %}
+        <p>
+            {% if not request.regstage.task_1 %}
+                <a href="/reverse/">Выполнить /reverse/ !</a>
+            {% endif %}
+        <p>
+        {% if not request.regstage.task_2 %}
+            <a href="/network/">Выполнить /network/ !</a>
+        {% endif %}
+
+    {% endif %}
+
+
+
+{% endif %}

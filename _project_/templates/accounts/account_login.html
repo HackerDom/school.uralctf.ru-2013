@@ -1,11 +1,14 @@
 {% extends "accounts/account_form.html" %}
 {% load i18n future %}
+{% load ulogin_tags %}
 
 {% block main %}
 
     {% if request.user.is_authenticated %}
         <p>{% trans "You're already logged in." %}</p>
     {% else %}
+        <div style="text-align: center; padding: 8px 14px;" class="alert"> {% ulogin_widget %} </div>
+
         {{ block.super }}
         {% url "signup" as signup_url %}
         <p>{% blocktrans with request.GET.next as next %}If you don't have an account you can

@@ -1,12 +1,14 @@
 {% extends "accounts/account_form.html" %}
 {% load i18n %}
+{% load ulogin_tags %}
+
 
 {% block main %}
 
     {% if request.user.is_authenticated %}
         <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
     {% else %}
-        <!-- a href="{% url socialauth_begin 'vkontakte' %}?{{ redirect_querystring }}">vkontakte</a -->
+        <div style="text-align: center; padding: 8px 14px;" class="alert"> {% ulogin_widget %} </div>
         {{ block.super }}
         {% if settings.ACCOUNTS_VERIFICATION_REQUIRED %}
             <p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p>
