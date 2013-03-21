@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+# -*- coding: utf-8 -*-
 
 """server: a file-based pop3 server
 
@@ -135,7 +135,6 @@ class Message(object):
 
 def serve(host, port, filename):
     """
-
     :param host:
     :param port:
     :param filename:
@@ -150,7 +149,7 @@ def serve(host, port, filename):
             hostname = "localhost"
         log.info("POP3 serving '%s' on %s:%s", filename, hostname, port)
         while True:
-            sock.listen(1)
+            sock.listen(200)
             conn, addr = sock.accept()
             log.debug('Connected by %s', addr)
             try:
@@ -176,11 +175,15 @@ def serve(host, port, filename):
 
     except (SystemExit, KeyboardInterrupt):
         log.info("Server stopped")
-    except Exception, ex:
-        log.critical("fatal error", exc_info=ex)
-    finally:
         sock.shutdown(socket.SHUT_RDWR)
         sock.close()
+        sys.exit(0)
+    except Exception, ex:
+        log.critical("fatal error", exc_info=ex)
+        sock.shutdown(socket.SHUT_RDWR)
+        sock.close()
+    sock.shutdown(socket.SHUT_RDWR)
+    sock.close()
 
 
 if __name__ == "__main__":
