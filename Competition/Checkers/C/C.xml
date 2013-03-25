@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<quest series="B" id="B:100" proto="xmlquest-1.0">
+<quest series="C" id="C:100" proto="xmlquest-1.0">
     <name>Persotorization</name>
     <task type="html"><p>Мы нашли какой-то сервер нашего персонажа. Похоже, у этого сервера одна задача: с помощью цепочки тестов выявить личность пришедшего и, если это хозяин сервера, напомнить пароль. Нам очень нужен этот пароль
 <br></br>
-Какой пароль напоминает эта система?<br></br>
-    <a href="/tasks/task3">Адрес</a></p></task>
+Какой пароль напоминает <a href="http://school.uralctf.ru/C/">эта система?</a></p></task>
     <checker strict="yes">
         <solution case="insensitive">homo-rabbit*is_not^only+valuable@fur</solution>
     </checker>

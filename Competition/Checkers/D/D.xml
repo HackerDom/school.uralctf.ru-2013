@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<quest series="D" id="D:100" proto="xmlquest-1.0">
+    <name>Дискета</name>
+    <task type="html"><p>Среди его вещей мы нашли дискету.<br></br>
+Зачем современному школьнику может быть нужна <a href="http://school.uralctf.ru/static/quest/floppy.img">дискета</a>?</p></task>
+    <checker strict="yes">
+        <solution case="sensitive">boobs</solution>
+        <solution case="sensitive">b00b5</solution>
+    </checker>
+</quest>

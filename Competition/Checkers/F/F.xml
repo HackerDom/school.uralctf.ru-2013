@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<quest series="F" id="F:100" proto="xmlquest-1.0">
+    <name>Место встречи изменить нельзя</name>
+    <task type="html"><p>Среди фотографий белок и котят мы нашли <a href="http://school.uralctf.ru/static/quest/whosaidthat.zip">архив, защищенный паролем</a> и эту <a href="http://school.uralctf.ru/static/quest/Question.jpg">фотографию</a>.<br></br>
+Мы предполагаем, что в архиве находится место следующей встречи с сообщниками, поэтому очень важно, чтобы вы смогли понять, что там написано.</p></task>
+    <checker strict="yes">
+        <solution case="insensitive">YOU WILL FIND ME IN THE SECOND SAFE PLACE</solution>
+    </checker>
+</quest>

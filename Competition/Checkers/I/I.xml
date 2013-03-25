@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<quest series="I" id="I:100" proto="xmlquest-1.0">
+    <name>Аномалия</name>
+    <task type="html"><p>Новости от провайдера.<br></br>
+Был обнаружен еще один сервер, на котором побывал юный хакер.<br></br>
+Проблема в том, что никто так и не понял, с чьей "помощью" это было.<br></br>
+Нам удалось получить лог входов и какая команда каждым из них была выполнена.<br></br>
+Только одно становится более-менее понятным: в тот день время остановилось...<br></br><br></br>
+Из всей информации нас интересует лишь имя пользователя, который все это сделал.
+    ssh -p 2022 anomaly@school.uralctf.ru (Pass: whatsthehell)</p></task>
+    <checker strict="yes">
+        <solution case="sensitive">acid_burn</solution>
+    </checker>
+</quest>

