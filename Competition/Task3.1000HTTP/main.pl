@@ -15,7 +15,7 @@ binmode STDOUT,':utf8';
 
 my $nameOfCookie_DB:shared='cookies.finilized';
 my $nameOfQuestionsDB:shared='DB/questions.finilized';
-my $answersRequire=3;
+my $answersRequire=2;
 
 my $DB_questions_dont_forget_fucking_LOCK :shared= retrieve($nameOfQuestionsDB) or die("something wrong with DataBase($nameOfQuestionsDB). $!");
 my %h;
@@ -255,10 +255,8 @@ sub isCompletedTest{
 
 sub showFlag{
 	print "\r\n\r\n";
-	say "youre welcome\r\n";
 	say "access granted\r\n";
-	say "your lovely passphraze is\r\n";
-	say "whosyourdaddy\r\n";
+	say "your lovely passphraze is \"homo-rabbit*is_not-only+valuable@fur\" ";
 }
 __END__
 25. use Storable qw(lock_store lock_nstore lock_retrieve)
