@@ -4,7 +4,7 @@
     <task type="html"><p>Нам удалось связаться с провайдером школьника,<br></br>
 он смог выдать нам некоторую информацию: специалисты обнаружили его недавнюю активность на одном сервере.<br></br><br></br>
 Проверьте, не оставил ли он в лабиринте каких-нибудь ценных для нас данных? <br></br>
-    ssh -p 1022 labirint@school.uralctf.ru  (Pass: welcomE)</p></task>
+    ssh labirint@school.uralctf.ru  (Pass: welcomE)</p></task>
     <checker strict="yes">
         <solution case="sensitive">Min0TauRU5</solution>
     </checker>

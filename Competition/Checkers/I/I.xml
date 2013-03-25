@@ -7,7 +7,7 @@
 Нам удалось получить лог входов и какая команда каждым из них была выполнена.<br></br>
 Только одно становится более-менее понятным: в тот день время остановилось...<br></br><br></br>
 Из всей информации нас интересует лишь имя пользователя, который все это сделал.
-    ssh -p 2022 anomaly@school.uralctf.ru (Pass: whatsthehell)</p></task>
+    ssh anomaly@school.uralctf.ru (Pass: whatsthehell)</p></task>
     <checker strict="yes">
         <solution case="sensitive">acid_burn</solution>
     </checker>
