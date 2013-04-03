@@ -10,6 +10,7 @@ use Storable;
 
 $|++;
 
+
 binmode STDOUT,':utf8';
 
 my $nameOfCookie_DB:shared='cookies.finilized';
