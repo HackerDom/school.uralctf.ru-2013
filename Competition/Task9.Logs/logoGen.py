@@ -3,7 +3,7 @@ import datetime
 from random import randint
 
 __author__ = 'Messiah'
-logString = '%(date)s %(time)s %(user)s CMD: "%(cmd)s"'
+logString = '{date} {time} {user} CMD: "{cmd}"\n'
 users = []
 commands = {0: ["ps", "ls", "ls -la", "cd", "top", "date", "cal", "uptime", "w", "whoami",
                 "uname -a", "cat /proc/cpuinfo", "cat /proc/meminfo", "df", "du", "free"],
@@ -46,15 +46,16 @@ def generateHost():
 
 
 def main():
-    start = datetime.date(2006, 5, 14)
-    finish = datetime.date(2013, 3, 23)
+    log = open("secure.log", "w")
+    start = datetime.date(1941, 1, 1)
+    finish = datetime.date(2013, 4, 5)
     delta = (finish - start).days
     for day in range(delta):
         date = start + datetime.timedelta(days=day)
-        times = ["%02d:%02d:%02d,%03d" % (randint(0, 23),
+        times = ["{:02}:{:02}:{:02},{:03}".format(randint(0, 23),
                                           randint(0, 59),
                                           randint(0, 59),
-                                          randint(0, 999)) for i in range(randint(1, 7))]
+                                          randint(0, 999)) for i in range(randint(3, 10))]
         times.sort()
         for time in times:
             username = users[randint(0, len(users) - 1)]
@@ -75,7 +76,7 @@ def main():
                     command = cmd
                 else:
                     command += " && " + cmd
-            print logString % {'date': date, 'time': time, 'user': user, 'cmd': command}
+            log.write(logString.format(date=date, time=time, user=user, cmd=command))
 
 
 if __name__ == '__main__':
