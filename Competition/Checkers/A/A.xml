@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <quest series="A" id="A:100" proto="xmlquest-1.0">
     <name>Лабиринт</name>
-    <task type="html"><p>Пока %username% ходил по интернету и взламывал сервера, он оставлял различные артефакты, подтверждавшие факт его проникновения.
-Но чтобы артефакт не достался кому попало, он стал создавать различные ловушки.<br></br><br></br>
-Помогите нам найти оставленный им ключ посреди лабиринта и приблизиться к раскрытию его личности.<br></br>
-    ssh root@192.168.197.135</p></task>
+    <task type="html"><p>Нам удалось связаться с провайдером школьника,<br></br>
+он смог выдать нам некоторую информацию: специалисты обнаружили его недавнюю активность на одном сервере.<br></br><br></br>
+Проверьте, не оставил ли он в лабиринте каких-нибудь ценных для нас данных? <br></br>
+    ssh labirint@school.uralctf.ru  (Pass: welcomE)</p></task>
     <checker strict="yes">
-        <solution case="sensitive">MinotauRUS</solution>
+        <solution case="sensitive">Min0TauRU5</solution>
     </checker>
 </quest>

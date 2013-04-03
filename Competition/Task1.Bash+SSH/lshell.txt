@@ -2,17 +2,18 @@
 2. vim /etc/lshell.conf
     logpath : /var/log/lshell/  #Если интересно посмотреть, что вводили.
     loglevel : 4
-
-    allowed : ['ls','cd','find','man','cat','less',]
+    allowed : ['ls','cd','find','man','cat','less','date', 'tail', 'pwd']
     forbidden : ['&','`','>','<','$(','${']
     warning_counter : 50
     prompt : "%u@%h"
+    aliases         : {'date':'echo "Mon Mar 25 10:09:17 YEKT 2013"', 'pwd':'echo /'}    
     sftp : 0
     history_size : 1
-3. /home/hacker/jail
-    chown root hacker
-    chown hacker jail
-4. /etc/passwd: hacker:.....:/home/hacker/jail:/usr/bin/lshell
+
+3. /home/labirint/jail
+    chown root labirint
+    chown labirint jail
+4. /etc/passwd: labirint:.....:/home/labirint/jail:/usr/bin/lshell
 5. /etc/security/limits.conf:
-    hacker  hard    nproc   30
+    labirint  hard    nproc   30
 

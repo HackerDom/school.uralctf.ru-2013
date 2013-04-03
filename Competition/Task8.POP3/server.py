@@ -11,7 +11,7 @@ import os
 import socket
 import sys
 
-logging.basicConfig(format="%(name)s %(levelname)s - %(message)s")
+logging.basicConfig(filename="/var/log/pop3.log", format="%(name)s %(levelname)s - %(message)s")
 log = logging.getLogger("server")
 log.setLevel(logging.DEBUG)
 
@@ -61,14 +61,14 @@ class ChatterboxConnection(object):
         except ValueError:
             return "-ERR you must send name"
         else:
-            if self.user == "messiah":
+            if self.user == "user":
                 return "+OK it is a valid mailbox"
             else:
                 return "-ERR never heard of mailbox %s" % self.user
 
     def handlePass(self, data, msg):
-        if self.user == "messiah":
-            if data == "PASS qwerty":
+        if self.user == "user":
+            if data == "PASS passw0rd":
                 self.authorized = 1
                 return "+OK user authorized"
             return "-ERR invalid password"
@@ -125,10 +125,10 @@ class Message(object):
         try:
             self.data = data = msg.read()
             self.size = len(data)
-            self.top, bot = data.split("\r\n\r\n", 1)
-            self.bot = bot.split("\r\n")
-        except Exception:
-            log.error("Bad message file")
+            self.top, bot = data.split("\n\n", 1)
+            self.bot = bot.split("\n")
+        except Exception as e:
+            log.error("Bad message file: {}".format(e))
         finally:
             msg.close()
 

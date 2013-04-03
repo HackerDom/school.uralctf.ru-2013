@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# chkconfig: 345 80 20
+# description: run fetchmail service
+#
+PIDFILE=/var/run/pop3.pid
+
+if [ ! -x /home/mail/server.py ]; then
+    exit 1
+fi
+
+if [ -x /etc/rc.d/init.d/functions ]; then
+   . /etc/rc.d/init.d/functions
+fi
+
+RETVAL=0
+
+start () {
+    echo "Starting pop3daemon"
+    start-stop-daemon -S -b -m --pidfile $PIDFILE --exec /home/mail/server.py 0.0.0.0:110 /home/mail/message.txt
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/pop3
+    echo "[Started]"
+    return $RETVAL
+}
+
+stop () {
+    echo -n "Stopping pop3daemon "
+    start-stop-daemon -K --pidfile $PIDFILE
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/pop3
+    echo "[Stopped]"
+    return $RETVAL
+}
+
+case $1 in
+    start)
+    start
+    ;;
+    stop)
+    stop
+    ;;
+    restart|reload)
+    stop
+    start
+    ;;
+    condrestart)                                                                
+    if [ -f /var/lock/subsys/pop3 ]; then                                    
+            stop
+            start                                                             
+        fi                                                                      
+        ;;                                                                      
+    status)
+    status /home/mail/server.py
+    ;;
+    *)
+    echo "Usage: $0 {start|stop|restart|reload|condrestart|status}"
+    ;;
+esac
+
+RETVAL=$?
+
+exit $RETVAL
