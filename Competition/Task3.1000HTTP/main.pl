@@ -4,18 +4,18 @@ use FCGI;
 use 5.12.00;
 use Data::Dumper qw( Dumper );
 use threads::shared;
-use strict;
 # use utf8;
 use Encode;
-use warnings;
-$|++;
 use Storable;
+
+$|++;
 
 binmode STDOUT,':utf8';
 
 my $nameOfCookie_DB:shared='cookies.finilized';
 my $nameOfQuestionsDB:shared='DB/questions.finilized';
-my $answersRequire=2;
+my $answersRequire=450;
+my $FCGIListenPort=9379;
 
 my $DB_questions_dont_forget_fucking_LOCK :shared= retrieve($nameOfQuestionsDB) or die("something wrong with DataBase($nameOfQuestionsDB). $!");
 my %h;
@@ -70,7 +70,7 @@ sub decodeHEX{
 	#return split('=',(split('&',$query)));
 }
 
-my $socketToCGI=FCGI::OpenSocket(":9379",5);
+my $socketToCGI=FCGI::OpenSocket(":".$FCGIListenPort,5);
 print "MAIN";
 my $host = FCGI::Request(\*STDIN,\*STDOUT,\*STDERR,\%ENV,$socketToCGI);
 
@@ -256,15 +256,7 @@ sub isCompletedTest{
 sub showFlag{
 	print "\r\n\r\n";
 	say "access granted\r\n";
-	say "your lovely passphraze is \"homo-rabbit*is_not-only+valuable@fur\" ";
+	say "your lovely passphraze is \"homo-rabbit*is_not-only+valuable\@fur\" ";
 }
+
 __END__
-25. use Storable qw(lock_store lock_nstore lock_retrieve)
-26. lock_store \%table, 'file';
-27. lock_nstore \%table, 'file';
-28. $hashref = lock_retrieve('file');
-
-
-<input type="radio" name="answer" value="a1">Офицерский состав<Br>
-			<input type="radio" name="answer" value="a2">Операционная система<Br>
-			<input type="radio" name="answer" value="a3">Большой полосатый му
