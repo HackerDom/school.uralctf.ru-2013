@@ -4,6 +4,7 @@
     <task type="html"><p>К нам обратились владельцы ресурса, которые подозревают, что с ними связывался наш хакер.<br></br>
 Но всё, что они могут нам дать - некоторое количество траффика, который был перехвачен сниффером на их оборудовании.<br></br><br></br>
 Посмотрите, можем ли мы получить что-нибудь из <a href="http://school.uralctf.ru/static/quest/task2"> этого</a>?
+    </p></task>
     <checker strict="yes">
         <solution case="sensitive">FORTY_TWO</solution>
     </checker>

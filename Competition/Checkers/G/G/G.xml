@@ -2,7 +2,7 @@
 <quest series="G" id="G:100" proto="xmlquest-1.0">
     <name>Фотография</name>
     <task type="html"><p>Специалисты смогли найти в спешке удаленные фотографии.<br></br>
-Среди них была и <a href="http://school.uralctf.ru/static/quest/taskG.jpg">эта, она отличается от остальных</a> - на ней кто-то изображен.<br></br>
+Среди них была и <a href="http://school.uralctf.ru/static/quest/bro.jpg">эта, она отличается от остальных</a> - на ней кто-то изображен.<br></br>
 Полезно было бы понять, кто это или хотя бы где его искать, что это за место.</p></task>
     <checker strict="yes">
         <solution case="insensitive">Quasimodo</solution>
