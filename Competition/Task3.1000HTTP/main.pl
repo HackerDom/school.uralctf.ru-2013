@@ -1,12 +1,12 @@
-﻿#!/usr/bin/perl
+#!/usr/local/bin/perl
 
 use FCGI;
+use Storable;
 use 5.12.00;
 use Data::Dumper qw( Dumper );
-use threads::shared;
+#use threads::shared;
 # use utf8;
 use Encode;
-use Storable;
 
 $|++;
 
@@ -14,13 +14,13 @@ $|++;
 binmode STDOUT,':utf8';
 
 my $nameOfCookie_DB:shared='cookies.finilized';
-my $nameOfQuestionsDB:shared='DB/questions.finilized';
+my $nameOfQuestionsDB:shared='questions.finilized';
 my $answersRequire=450;
 my $FCGIListenPort=9379;
 
-my $DB_questions_dont_forget_fucking_LOCK :shared= retrieve($nameOfQuestionsDB) or die("something wrong with DataBase($nameOfQuestionsDB). $!");
+my $DB_questions_dont_forget_fucking_LOCK=retrieve($nameOfQuestionsDB) or die("something wrong with DataBase($nameOfQuestionsDB). $!");
 my %h;
-my $DB_cookies :shared = \%h;
+my $DB_cookies = \%h;
 
 # say (Data::Dumper::Dumper($DB_questions_dont_forget_fucking_LOCK));
 
@@ -71,8 +71,8 @@ sub decodeHEX{
 	#return split('=',(split('&',$query)));
 }
 
-my $socketToCGI=FCGI::OpenSocket(":".$FCGIListenPort,5);
-print "MAIN";
+my $socketToCGI=FCGI::OpenSocket("127.0.0.1:".$FCGIListenPort,5);
+print "MAIN\n";
 my $host = FCGI::Request(\*STDIN,\*STDOUT,\*STDERR,\%ENV,$socketToCGI);
 
 my $response;
@@ -91,10 +91,7 @@ while($host->Accept()>=0){
 	$cookie=$env{HTTP_COOKIE} if exists $env{HTTP_COOKIE};
 	$cookie=(split"=",$cookie)[1];
 	$cookie = '' if !isCookieExist $cookie;
-	
 	my $isRightAnswer=0;
-	
-	
 	if ($env{REQUEST_METHOD} eq "POST"){
 		read (STDIN,$response,$env{HTTP_CONTENT_LENGTH});
 		my %post=decodeHEX($response);
@@ -217,7 +214,8 @@ sub showPage{
 
 	open FILE,">","log";
 	binmode FILE,':utf8';
-	say FILE $html;
+	#say FILE $html;
+	print FILE $html;
 	close FILE;
 
 	return print $html;
@@ -256,8 +254,10 @@ sub isCompletedTest{
 
 sub showFlag{
 	print "\r\n\r\n";
-	say "access granted\r\n";
-	say "your lovely passphraze is \"homo-rabbit*is_not-only+valuable\@fur\" ";
+	#say "access granted\r\n";
+	print "access granted\r\n";
+	#say "your lovely passphraze is \"homo-rabbit*is_not-only+valuable\@fur\" ";
+	print "your lovely passphraze is \"homo-rabbit*is_not-only+valuable\@fur\" ";
 }
 
 __END__
