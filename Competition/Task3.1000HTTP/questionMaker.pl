@@ -38,7 +38,7 @@ sub returnQuestions_1{
 	
 	my @questions;
 	# say Data::Dumper::Dumper($main);
-	foreach my $groups(keys $main->{form}->{group}){
+	foreach my $groups(keys %{$main->{form}->{group}}){
 		foreach my $question($main->{form}->{group}->{$groups}->{question}){
 			push @questions, $question;
 		}
@@ -63,7 +63,7 @@ sub toUsable_2{
 			my $countOfpoints=0;
 			foreach my $answer ( @{$block_question->{answerPoint}}){
 				if ($answer->{value} ne ''){
-					push $memory{$id}->{answers},$answer->{value};
+					push @{$memory{$id}->{answers}},$answer->{value};
 					++$countOfpoints;
 				}
 			}
@@ -73,6 +73,10 @@ sub toUsable_2{
 	
 	say $id;
 	store \%memory,'questions.finilized';
+
+    my $test=retrieve('questions.finilized');
+
+    print Data::Dumper::Dumper($test);
 	
 	my %memory;
 	my $id=0;
@@ -87,7 +91,7 @@ sub toUsable_2{
 			my $countOfpoints=0;
 			foreach my $answer ( @{$block_question->{answerPoint}}){
 				if ($answer->{value} ne ''){
-					push $memory{$id}->{answers},normIt($answer->{value});
+					push @{$memory{$id}->{answers}},normIt($answer->{value});
 					++$countOfpoints;
 				}
 			}
@@ -95,7 +99,7 @@ sub toUsable_2{
 		}
 	}
 	
-	say Data::Dumper::Dumper(\%memory);
+	#say Data::Dumper::Dumper(\%memory);
 }
 
 sub normIt{

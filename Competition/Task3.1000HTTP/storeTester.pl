@@ -1,5 +1,5 @@
 ﻿use Storable;
-use 5.12.00;
+#use 5.12.00;
 use Encode;
 use utf8;
 use Data::Dumper qw( Dumper );

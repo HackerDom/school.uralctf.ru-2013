@@ -3,11 +3,10 @@
 # chkconfig: 345 80 20
 # description: run fetchmail service
 #
-PIDFILE=/var/run/pop3.pid
-HOMEDIR=/home/mail/
-DAEMON=server.py
-DAEMON_ARGS=" 0.0.0.0:110 ${HOMEDIR}message.txt"
-NAME=POP3Daemon
+PIDFILE=/var/run/webC.pid
+HOMEDIR=/home/C/
+DAEMON=main.pl
+NAME=webC
 if [ ! -x ${HOMEDIR}${SCRIPT} ]; then
     exit 1
 fi
@@ -22,7 +21,7 @@ RETVAL=0
 
 do_start () {
     status_of_proc $DAEMON $NAME -p $PIDFILE > /dev/null && return 2 \
-    || start-stop-daemon --start --quiet -b -m --pidfile $PIDFILE --exec ${HOMEDIR}$DAEMON $DAEMON_ARGS> /dev/null || return 2
+    || start-stop-daemon --start --quiet -b -m --pidfile $PIDFILE -d ${HOMEDIR} --exec $DAEMON > /dev/null || return 2
 }
 
 do_stop () {
@@ -35,7 +34,7 @@ do_stop () {
     # that waits for the process to drop all resources that could be
     # needed by services started subsequently.  A last resort is to
     # sleep for some time.
-    start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 --exec ${HOMEDIR}$DAEMON 
+    start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 -d ${HOMEDIR} --exec $DAEMON
     [ "$?" = 2 ] && return 2
     # Many daemons don't delete their pidfiles when they exit.
     rm -f $PIDFILE
