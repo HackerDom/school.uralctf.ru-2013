@@ -11,8 +11,8 @@ import os
 import socket
 import sys
 
-logging.basicConfig(filename="/var/log/pop3.log", format="%(name)s %(levelname)s - %(message)s")
-log = logging.getLogger("server")
+logging.basicConfig(filename="/var/log/pop3.log", format="%(asctime)s %(levelname)s - %(message)s")
+log = logging.getLogger("POP3")
 log.setLevel(logging.DEBUG)
 
 
