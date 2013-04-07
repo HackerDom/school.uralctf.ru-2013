@@ -10,6 +10,7 @@ import logging
 import os
 import socket
 import sys
+import thread
 
 logging.basicConfig(filename="/var/log/pop3.log", format="%(asctime)s %(levelname)s - %(message)s")
 log = logging.getLogger("POP3")
@@ -61,14 +62,14 @@ class ChatterboxConnection(object):
         except ValueError:
             return "-ERR you must send name"
         else:
-            if self.user == "user":
+            if self.user == "abuse" or self.user == "abuse@dot.tk":
                 return "+OK it is a valid mailbox"
             else:
                 return "-ERR never heard of mailbox %s" % self.user
 
     def handlePass(self, data, msg):
-        if self.user == "user":
-            if data == "PASS passw0rd":
+        if self.user == "abuse" or self.user == "abuse@dot.tk":
+            if data == "PASS 5315725":
                 self.authorized = 1
                 return "+OK user authorized"
             return "-ERR invalid password"
@@ -132,6 +133,30 @@ class Message(object):
         finally:
             msg.close()
 
+def handler(conn, addr, msg):
+    try:
+        conn = ChatterboxConnection(conn)
+        conn.sendall("+OK Welcome to our POP3 server!")
+        while True:
+            data = conn.recvall()
+            if not data.split(None, 1):
+                break
+            command = data.split(None, 1)[0]
+            try:
+                cmd = conn.dispatch[command]
+            except KeyError:
+                conn.sendall("-ERR unknown command")
+            else:
+                conn.sendall(cmd(data, msg))
+                if cmd == conn.handleQuit:
+                    break
+    except:
+        pass
+    finally:
+        conn.close()
+        msg = None
+        return 0
+
 
 def serve(host, port, filename):
     """
@@ -141,6 +166,7 @@ def serve(host, port, filename):
     """
     assert os.path.exists(filename)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind((host, port))
     try:
         if host:
@@ -148,31 +174,13 @@ def serve(host, port, filename):
         else:
             hostname = "localhost"
         log.info("POP3 serving '%s' on %s:%s", filename, hostname, port)
+        msg = Message(filename)
         while True:
             sock.listen(200)
             conn, addr = sock.accept()
             log.debug('Connected by %s', addr)
-            try:
-                msg = Message(filename)
-                conn = ChatterboxConnection(conn)
-                conn.sendall("+OK Welcome to our POP3 server!")
-                while True:
-                    data = conn.recvall()
-                    if not data.split(None, 1):
-                        continue
-                    command = data.split(None, 1)[0]
-                    try:
-                        cmd = conn.dispatch[command]
-                    except KeyError:
-                        conn.sendall("-ERR unknown command")
-                    else:
-                        conn.sendall(cmd(data, msg))
-                        if cmd == conn.handleQuit:
-                            break
-            finally:
-                conn.close()
-                msg = None
-
+            thread.start_new_thread(handler, (conn, addr, msg))
+            
     except (SystemExit, KeyboardInterrupt):
         log.info("Server stopped")
         sock.shutdown(socket.SHUT_RDWR)
@@ -180,10 +188,12 @@ def serve(host, port, filename):
         sys.exit(0)
     except Exception, ex:
         log.critical("fatal error", exc_info=ex)
-        sock.shutdown(socket.SHUT_RDWR)
-        sock.close()
-    sock.shutdown(socket.SHUT_RDWR)
-    sock.close()
+    finally:
+        try:
+            sock.shutdown(socket.SHUT_RDWR)
+            sock.close()
+        except:
+            pass
 
 
 if __name__ == "__main__":

@@ -11,10 +11,10 @@ import poplib
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/status/')
 def index():
     host = "school.uralctf.ru"
-    services = ['QServer', 'MEM', 'CPU',
+    services = ['QServer', 'MEM', 'DISK', 'CPU',
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
                 'Promo']
 
@@ -58,14 +58,16 @@ def index():
                     return 1
                 return 2
             elif service == "C":
-                r = requests.get("http://{0}/C/".format(host))
+                r = requests.get("http://pop-server.tk/".format(host), auth=('C','Pfrhsnj'))
                 if r.status_code == 200:
                     return 0
+                elif r.status_code == 502:
+                    return 1
                 elif r.status_code == 401:
-                    return 2
-                return 1
+                    return 3
+                return 2
             elif service == "D":
-                link = "http://school.uralctf.ru/static/quest/floppy.img"
+                link = "http://{}/static/quest/floppy.img".format(host)
                 r = requests.head(link)
                 if r.status_code == 200:
                     return 0
@@ -102,7 +104,7 @@ def index():
                 user = "abuse"
                 password = "5315725"
                 try:
-                    Mailbox = poplib.POP3('pop-server.tk', '110')
+                    Mailbox = poplib.POP3('school.uralctf.ru', '110', 5)
                 except:
                     return 1
                 try:
@@ -151,8 +153,16 @@ def index():
                     return 2
                 else:
                     return 1
+            elif service == "DISK":
+                freeDisk = int(os.popen("df").readlines()[1].split()[3]) / 1024
+                if freeDisk > 5000:
+                    return 0
+                elif freeDisk > 3000:
+                    return 2
+                else:
+                    return 1
             elif service == "CPU":
-                cpuUse = float(str(os.popen("top -b -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip()))
+                cpuUse = float(str(os.popen("top -b -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip().split('%')[0]))
                 if cpuUse > 80:
                     return 1
                 elif cpuUse > 50:
@@ -172,6 +182,7 @@ def index():
     response = '''
             <!DOCTYPE HTML>
             <html><head>
+            <META HTTP-EQUIV="refresh" CONTENT="300">
             <title>Status of services</title>
             <style type="text/css">
                 TABLE,TD,TH {
@@ -179,7 +190,7 @@ def index():
                     border: 1px solid black;
                     border-collapse: collapse;
                     font-family: arial;
-                    font-size: 8pt;
+                    font-size: 16pt;
                 }
                 TD,TH {
                     padding: 5px;
@@ -187,7 +198,7 @@ def index():
             </style>
             </head>
             <body>
-            <h1>Status of functions</h1>
+            <h1>Status of services</h1>
             <table><tr>
             '''
 

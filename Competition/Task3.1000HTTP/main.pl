@@ -1,5 +1,4 @@
 #!/usr/local/bin/perl
-
 use FCGI;
 use Storable;
 use 5.12.00;
@@ -9,7 +8,16 @@ use Data::Dumper qw( Dumper );
 use Encode;
 
 $|++;
+sub try (&$) {
+   my($try, $catch) = @_;
+   eval { $try };
+   if ($@) {
+      local $_ = $@;
+      &$catch;
+   }
+}
 
+sub catch (&) { $_[0] }
 
 binmode STDOUT,':utf8';
 
@@ -197,12 +205,14 @@ sub showPage{
 	$html=~s/%question%/normIt($DB_questions_dont_forget_fucking_LOCK->{$score}->{question})/e;
 	$html=~s/%currentNumber%/$score/;
 	if ($isRightAnswer){
+        $html=~s/%color%/white/;
 		$html=~s/%status%/correct/;
 	}else{
+        $html=~s/%color%/red/;
 		$html=~s/%status%/uncorrect/;
 	}
 
-	my @answers=@{$DB_questions_dont_forget_fucking_LOCK->{$score}->{answers}};
+	my @answers=@{$DB_questions_dont_forget_fucking_LOCK->{$score}->{answers} || []};
 
 	my $answerBlock='';
 	my $index=0;
@@ -212,13 +222,12 @@ sub showPage{
 	}
 	$html=~s/%answers%/$answerBlock/;
 
-	open FILE,">","log";
-	binmode FILE,':utf8';
+	#open FILE,">","log";
+	#binmode FILE,':utf8';
 	#say FILE $html;
-	print FILE $html;
-	close FILE;
-
-	return print $html;
+	#print FILE $html;
+	#close FILE;
+    return print Encode::encode('utf8', $html);
 }
 
 sub toInt{
@@ -256,8 +265,8 @@ sub showFlag{
 	print "\r\n\r\n";
 	#say "access granted\r\n";
 	print "access granted\r\n";
-	#say "your lovely passphraze is \"homo-rabbit*is_not-only+valuable\@fur\" ";
-	print "your lovely passphraze is \"homo-rabbit*is_not-only+valuable\@fur\" ";
+	#say "your lovely passphraze is \"homo-rabbit*is_not^only+valuable\@fur\" ";
+	print "your lovely passphraze is \"homo-rabbit*is_not^only+valuable\@fur\" ";
 }
 
 __END__
