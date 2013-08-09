@@ -16,7 +16,9 @@ def form_processor(request, page):
     Display a built form and handle submission.
     """
     if request.method == 'POST':
-        form = FormForForm(page.form, request.POST or None, request.FILES or None)
+        form = FormForForm(page.form,
+                           request.POST or None,
+                           request.FILES or None)
         if form.is_valid() and request.regstage:
             request.regstage.anketa = True
             request.regstage.save()
@@ -30,7 +32,9 @@ def form_processor(request, page):
     Display a built form and handle submission.
     """
     if request.method == 'POST':
-        form = FormForForm(page.form, request.POST or None, request.FILES or None)
+        form = FormForForm(page.form,
+                           request.POST or None,
+                           request.FILES or None)
         if form.is_valid():
             if form.cleaned_data['field_6'] == 'awqsAGkWSMguGwMG':
                 if request.regstage:
@@ -50,7 +54,9 @@ def form_processor(request, page):
     Display a built form and handle submission.
     """
     if request.method == 'POST':
-        form = FormForForm(page.form, request.POST or None, request.FILES or None)
+        form = FormForForm(page.form,
+                           request.POST or None,
+                           request.FILES or None)
         if form.is_valid():
             if form.cleaned_data['field_5'] == 'Are_you_attentive?':
                 if request.regstage:

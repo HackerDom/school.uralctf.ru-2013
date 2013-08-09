@@ -8,14 +8,14 @@ from django.views.generic import TemplateView
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       #url(r'^$', TemplateView.as_view(template_name="base.html"), name='home'),                     
-                       url("^$", "mezzanine.pages.views.page", {"slug": "/"}, name="home"),
+                       url("^$", "mezzanine.pages.views.page",
+                           {"slug": "/"}, name="home"),
 
                        # enable the admin:
                        url(r'^admin/', include(site.urls)),
                        url(r'^ulogin/', include('django_ulogin.urls')),
                        ("^", include("mezzanine.urls")),
-)
+                       )
 
 handler404 = "mezzanine.core.views.page_not_found"
 handler500 = "mezzanine.core.views.server_error"

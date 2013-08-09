@@ -32,14 +32,14 @@ class UserInfo(models.Model):
     SEX_MALE = 2
 
     def upload_photo(self, filename):
-        return 'avatars/{network}/{uid}/{file}'.format(network=self.ulogin.network,
-                                                       uid=self.ulogin.uid,
-                                                       file=os.path.basename(filename))
+        return 'avatars/{}/{}/{}'.format(self.ulogin.network,
+                                         self.ulogin.uid,
+                                         os.path.basename(filename))
 
     def upload_photo_big(self, filename):
-        return 'photos/{network}/{uid}/{file}'.format(network=self.ulogin.network,
-                                                      uid=self.ulogin.uid,
-                                                      file=os.path.basename(filename))
+        return 'photos/{}/{}/{}'.format(self.ulogin.network,
+                                        self.ulogin.uid,
+                                        os.path.basename(filename))
 
     ulogin = models.ForeignKey(ULoginUser)
     sex = models.IntegerField(blank=True, null=True,
@@ -81,18 +81,11 @@ def catch_ulogin_signal(*args, **kwargs):
         d, m, y = json['bdate'].split('.')
         data['bdate'] = datetime.datetime(int(y), int(m), int(d))
 
-    userinfo, create = UserInfo.objects.get_or_create(**{'ulogin': ulogin, 'user': user})
+    userinfo, create = UserInfo.objects.get_or_create(**{'ulogin': ulogin,
+                                                         'user': user})
     for x, y in data.iteritems():
         setattr(userinfo, x, y)
     userinfo.save()
-
-    # if create:
-    #     for fld in []:
-    #         if fld not in json:
-    #             continue
-    #         getattr(userinfo, fld).save(os.path.basename(json[fld]),
-    #                                     ContentFile(requests.get(json[fld]).raw.read()))
-    #         userinfo.save()
 
 
 assign.connect(receiver=catch_ulogin_signal,
