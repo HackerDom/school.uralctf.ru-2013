@@ -4,11 +4,12 @@
 
 {% block extra_js %}
     {{ block.super }}
-    <script>
+<!--    <script>
         $(function () {
             $('.middle :input:visible:enabled:first').focus();
         });
     </script>
+-->
 {% endblock %}
 
 {% block main %}
@@ -32,8 +33,7 @@
             <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
                 {% fields_for form %}
                 <div class="form-actions">
-                    <input class="btn btn-primary btn-large" type="submit" value="{{ page.form.button_text }}">
-                </div>
+                    <input class="btn btn-primary btn-large" type="submit" value="Отправить"><!--{{ page.form.button_text }}">--> </div>
             </form>
 
         {% endif %}

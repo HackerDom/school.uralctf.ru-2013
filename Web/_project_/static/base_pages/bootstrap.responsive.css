@@ -150,7 +150,8 @@
     }
 
     .span5 {
-        width: 470px
+        width: 470px;
+        background: rgba(250, 250, 250, 0.8);
     }
 
     .span4 {

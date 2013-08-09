@@ -18,4 +18,5 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.logger.LoggingPanel',
 )
 
-INTERNAL_IPS = ('127.0.0.1', '88.85.211.202', '192.168.0.101')
+INTERNAL_IPS = ('127.0.0.1', '172.16.10.214')
+EXTERNAL_IPS = ('school.uralctf.ru')

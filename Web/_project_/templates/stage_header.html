@@ -1,18 +1,19 @@
 {% if not request.regstage or not request.regstage.all %}
 
     <div class="alert alert-alert" data-alert="alert">
-        <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>
+        <!-- a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a -->
         Чтобы принять участие вам нужно:
 
         {% if not request.user.is_authenticated %}
-            <a href="/login/">войти на сайт</a>,
+            <a href="/accounts/login/">войти на сайт</a>,
         {% endif %}
 
         {% if not request.regstage.anketa %}
-            <a href="/interview/">заполнить анкету</a>.
+            <a href="/interview/">заполнить анкету</a>, 
         {% endif %}
 
-        Выполнить
+	{% if not request.regstage.task_1 or not request.regstage.task_2 %}выполнить задания {% endif %}
+        
         {% if not request.regstage.task_1 %}
             <a href="/reverse/">/reverse/</a>
         {% endif %}

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
+    <meta name='yandex-verification' content='71306b8b89c884e4'>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
@@ -21,9 +21,9 @@
 
     {% compress css %}
         <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
-        <link rel="stylesheet" href="{{ STATIC_URL }}base_pages/bootstrap.responsive.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}base_pages/bootstrap.responsive.css?v=1">
         {#        <link rel="stylesheet" href="{{ STATIC_URL }}css/mezzanine.css">#}
-        <link rel="stylesheet" href="{{ STATIC_URL }}base_pages/styles.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}base_pages/styles.css?v=1">
         {% if LANGUAGE_BIDI %}
             <link rel="stylesheet" href="{{ STATIC_URL }}css/rtl.css">
         {% endif %}
@@ -61,7 +61,21 @@
     <![endif]-->
 
     {% block extra_head %}{% endblock %}
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?79"></script>
+    <script type="text/javascript">
+        VK.init({apiId: 3471111, onlyWidgets: true});
+    </script>
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-39022915-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+    </script>
 </head>
 
 <body id="{% block body_id %}body{% endblock %}">
@@ -83,13 +97,21 @@
             </div>
         </div>
     </div>
-</div -->
+</div --> 
 {% endcomment %}
+
+<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter20419816 = new Ya.Metrika({id:20419816, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/20419816" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
 
 
 <div class="wrapper">
 
-    {% include "stage_header.html" %}
+    {# include "stage_header.html" #}
+    <!--div class="alert alert-alert" data-alert="alert">
+        <h3>По техническим причинам и некоторым организационным моментам</br>
+            соревнование переносится на</h3><h2>6 апреля</h2></br>
+            <h3>Просим отнестись с пониманием.</h3>
+            P.S. Это никак вам не мешает отправлять заявку на участие уже сейчас.
+    </div-->
 
     {% nevercache %}
         {% for message in messages %}
@@ -99,8 +121,9 @@
         {% endfor %}
     {% endnevercache %}
 
-
-    <h1>{% block title %}{% endblock %}</h1>
+    <a href="/"><img src="/static/header.png" style="opacity: 0.8"></a>
+    <!--<h1>{% block title %}{% endblock %}</h1>-->
+    
 
     <ul class="breadcrumb">
         {% spaceless %}
@@ -109,25 +132,26 @@
     </ul>
 
 </div>
-
 <div class="container wrapper">
     <div class="row">
 
         {% comment %}
-        <!-- div class="span2 left">
-        {% block left_panel %}
-        <div class="panel tree">{% page_menu "pages/menus/tree.html" %}</div>
-        {% endblock %}
-        </div -->
-    {% endcomment %}
+        {% endcomment %}
 
-        <div class="span5 middle">
+        <div class="span5 middle" style="background-color: #f5f5f5;">
             {% block main %}{% endblock %}
         </div>
 
+       <div class="span3 rigth" style="">
+        {% block left_panel %}
+        <div class="panel tree" style="background-color: #f5f5f5;">{% page_menu "pages/menus/tree.html" %}</div>
+        {% endblock %}
+       </div>
+
+
         <div class="span3 right">
             {% nevercache %}
-                {% include "includes/user_panel.html" %}
+                {# % include "includes/user_panel.html" % #}
             {% endnevercache %}
             <div class="panel">
                 {% block right_panel %}
@@ -143,16 +167,23 @@
 
 <footer>
     <div class="container">
-        {% page_menu "pages/menus/footer.html" %}
-        <br style="clear:both">
-
-        <p class="muted credit">Ural SchoolCTF разрабатывается командой <a href="http://hackerdom.ru">ХакерДом</a><br>
-            при организационной поддержке компании <a href="http://kontur.ru"><img src="/static/skbkontur.gif"
-                                                                                   width="90px/"></a>.</p>
+       {% page_menu "pages/menus/footer.html" %}
+       <br style="clear:both"> 
+      <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+      <ul><li><g:plusone></g:plusone></li><li><div id="vk_like"></div><script type="text/javascript">VK.Widgets.Like("vk_like", {type: "mini", height: 20});</script></li><li><a href="https://twitter.com/share" class="twitter-share-button" data-text="Я буду играть в Ural SchoolCTF!" data-lang="ru" data-hashtags="UralSchoolCTF">Твитнуть</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></li></ul>
+        <p class="muted credit">Вопросы и замечания присылайте на почту: <a href="mailto:uralschoolctf@hackerdom.ru">UralSchoolCTF@HackerDom.ru</a><br>Ural SchoolCTF разрабатывается командой <a href="http://hackerdom.ru">ХакерДом</a><br>
+           При организационной поддержке компании <a href="http://kontur.ru"><img src="/static/skbkontur.png" width="90px" style="background:transparent;"></a></p> 
     </div>
-</footer>
 
 {% include "includes/footer_scripts.html" %}
+</footer>
 
 </body>
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
 </html>

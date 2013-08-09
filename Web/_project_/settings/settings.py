@@ -1,8 +1,8 @@
 # coding=utf-8
 __author__ = 'pahaz'
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
-
+INTERNAL_IPS = ('127.0.0.1', '172.16.10.214')
 ##
 ## The django-ulogin settings
 ##
@@ -30,7 +30,7 @@ ULOGIN_SCHEMES = {
 # PATHS #
 #########
 import os
-
+USE_X_FORWARDED_HOST = True
 
 # get relativ path
 def rel(*x):
@@ -39,7 +39,7 @@ def rel(*x):
 # Every cache key will get prefixed with this value - here we set it to
 # the name of the directory the project is in to try and use something
 # project specific.
-CACHE_MIDDLEWARE_KEY_PREFIX = "schoolctf.urfuclub.ru"
+CACHE_MIDDLEWARE_KEY_PREFIX = "school_uralctf_ru"
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -119,7 +119,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = None 
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -142,7 +142,7 @@ USE_TZ = True
 SECRET_KEY = "ac487dea-ee7f-4f7e-ad3e-0608046874f10-8463-ad8ebda16104"
 ROOT_URLCONF = '_project_.urls'
 WSGI_APPLICATION = '_project_.wsgi.application'
-ALLOWED_HOSTS = ['localhost', 'schoolctf.urfuclub.ru']
+ALLOWED_HOSTS = ['school.uralctf.ru']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -176,15 +176,13 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     '_project_',
-
-
     "mezzanine.accounts",
     #"mezzanine.mobile",
     'userinfo',
 
     #'reversion', 'reversion_compare',
     'django_ulogin',
-    'south',
+#    'south',
 )
 
 # List of processors used by RequestContext to populate the context.
