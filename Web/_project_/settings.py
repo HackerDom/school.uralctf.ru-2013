@@ -45,7 +45,7 @@ CACHE_MIDDLEWARE_KEY_PREFIX = "school_uralctf_ru"
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = rel('..', '..', '..', 'media')
+MEDIA_ROOT = rel('..', '..', 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -56,7 +56,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = rel('..', '..', '..', 'static')
+STATIC_ROOT = rel('..', '..', 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -64,7 +64,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    rel('..', 'static'),
+    rel('static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -76,7 +76,7 @@ STATICFILES_DIRS = (
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 
 TEMPLATE_DIRS = (
-    rel('..', 'templates'),
+    rel('templates'),
     # Put strings here,
     # like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -108,7 +108,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': rel('..', '..', '..', 'db', 'master.db'),
+        'NAME': rel('..', '..', 'db', 'master.db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -144,7 +144,7 @@ USE_TZ = True
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "<INSERT YOUR SECRET KEY HERE>"
-if SECRET_KEY == "<INSERT YOUR SECRET KEY HERE>":
+if SECRET_KEY is "<INSERT YOUR SECRET KEY HERE>":
     print("ERROR: You forgot to change SECRET_KEY in settings.py")
     exit(1)
 

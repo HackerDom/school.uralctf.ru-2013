@@ -1,6 +1,6 @@
 # coding=utf-8
 from django.utils.functional import SimpleLazyObject
-from .models import StageUser
+from _project_.models import StageUser
 
 __author__ = 'pahaz'
 
